@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  *
- *       Filename:  LZ-complexity.c
+ *       Filename:  LZ-complexity.go
  *
  *    Description:  Compute the Lempel-Ziv complexity of binary strings. Take a file as input (fasta/fa or one string/line). 
  *        Author:  Quang Tran @ University of Memphis  
@@ -34,12 +34,11 @@ func main(){
       rev76 := LZ76(reverse(string(seq)))
       nom := float64(len(seq))/math.Log2(float64(len(seq)))
 
-      fmt.Print(LZ78(string(seq)), "\t")
-      fmt.Print(LZ76(string(seq)), "\t")
+      fmt.Print(c78, "\t")
+      fmt.Print(c76, "\t")
       fmt.Print(Kolmogorov(string(seq)), "\t")
-      fmt.Print(LZ78(string(seq))+LZ78(reverse(string(seq))), "\t")
-      fmt.Print(LZ76(string(seq))+LZ76(reverse(string(seq))), "\t")
-      fmt.Print(Kolmogorov(string(seq)), "\t")
+      fmt.Print(c78+rev78, "\t")
+      fmt.Print(c76+rev76, "\t")
       // Normalize
       fmt.Print(float64(c78)/(nom), "\t")
       fmt.Print(float64(c76)/(nom), "\t")
@@ -48,7 +47,7 @@ func main(){
    }
 }
 
-func reverse(s string) string {
+func reverse(s []byte) []byte {
   rev := ""
   for _, elem := range s {
     if elem == 'A' {
@@ -66,13 +65,13 @@ func reverse(s string) string {
   return rev
 }
 
-func Kolmogorov(s string) float64 {
+func Kolmogorov(s []byte) float64 {
       c := float64(LZ76(s)) * math.Log2(float64(len(s)))
    return c
 }
 
 /* LZ76 implemented following "Easily calculable measure for the complexity of spatiotemporal patterns" F. Kaspar and H. G. Schuster. */
-func LZ76(s string) int {
+func LZ76(s []byte) int {
    c := 1
    l := 1
    i := 0
@@ -110,7 +109,7 @@ func LZ76(s string) int {
   return c;
 }
 
-func LZ78(seq string) int {
+func LZ78(seq []byte) int {
    m := make(map[string]bool)
    m[string(seq[0])] = true
    c := 1
