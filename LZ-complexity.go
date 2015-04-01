@@ -3,7 +3,8 @@
  *
  *       Filename:  LZ-complexity.go
  *
- *    Description:  Compute the Lempel-Ziv complexity of binary strings. Take a file as input (fasta/fa or one string/line). 
+ *    Description:  Compute the Lempel-Ziv complexity of binary strings. 
+                  Take a file as input (fasta/fa or one string/line). 
  *        Author:  Quang Tran @ University of Memphis  
  *
  * =============================================================================
