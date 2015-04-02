@@ -31,16 +31,20 @@ func main(){
    //fmt.Println(string(reverse(seq)))
    if len(seq)>0 {      
       c78 := LZ78(seq)
+      fmt.Print(c78, "\t")
+
       c76 := LZ76(seq)
+      fmt.Print(c76, "\t")
+
       rev78 := LZ78(reverse(seq))
       rev76 := LZ76(reverse(seq))
-      nom := float64(len(seq))/math.Log2(float64(len(seq)))
-
-      fmt.Print(c78, "\t")
-      fmt.Print(c76, "\t")
-      fmt.Print(Kolmogorov(seq), "\t")
       fmt.Print(c78+rev78, "\t")
       fmt.Print(c76+rev76, "\t")
+
+      fmt.Print(Kolmogorov(seq), "\t")
+
+      nom := float64(len(seq))/math.Log2(float64(len(seq)))
+            
       // Normalize
       fmt.Print(float64(c78)/(nom), "\t")
       fmt.Print(float64(c76)/(nom), "\t")
@@ -111,6 +115,24 @@ func LZ76(s []byte) int {
   return c;
 }
 
+func LZ78(s []byte) int {
+   dict := make(map[string]bool)
+   block := ""
+   for i, l:=0, 0; i<len(s); i++ {
+      block += string(s[i])
+      dict[block] = true
+      if len(dict) > l {
+         l = len(dict)
+         //fmt.Printf("%s.",block)
+         block = ""
+      }
+   }
+   if block != "" {
+      return len(dict)+1
+   }
+   return len(dict)
+}
+/*
 func LZ78(seq []byte) int {
    m := make(map[string]bool)
    m[string(seq[0])] = true
@@ -139,7 +161,7 @@ func LZ78(seq []byte) int {
    }    
    return c
 }
-
+*/
 func ReadSequence(file string) []byte{
    f, err := os.Open(file)
    if err != nil {
