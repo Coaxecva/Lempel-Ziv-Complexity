@@ -28,16 +28,17 @@ func main(){
    
    seq := ReadSequence(os.Args[1])
    //fmt.Println(string(seq))
+   //fmt.Println(string(reverse(seq)))
    if len(seq)>0 {      
-      c78 := LZ78(string(seq))
-      c76 := LZ76(string(seq))
-      rev78 := LZ78(reverse(string(seq)))
-      rev76 := LZ76(reverse(string(seq)))
+      c78 := LZ78(seq)
+      c76 := LZ76(seq)
+      rev78 := LZ78(reverse(seq))
+      rev76 := LZ76(reverse(seq))
       nom := float64(len(seq))/math.Log2(float64(len(seq)))
 
       fmt.Print(c78, "\t")
       fmt.Print(c76, "\t")
-      fmt.Print(Kolmogorov(string(seq)), "\t")
+      fmt.Print(Kolmogorov(seq), "\t")
       fmt.Print(c78+rev78, "\t")
       fmt.Print(c76+rev76, "\t")
       // Normalize
@@ -49,18 +50,18 @@ func main(){
 }
 
 func reverse(s []byte) []byte {
-  rev := ""
-  for _, elem := range s {
-    if elem == 'A' {
-      rev += "T"
-    } else if elem == 'T' {
-      rev += "A"
-    } else if elem == 'C' {
-      rev += "G"
-    } else if elem == 'G' {
-      rev += "C"
+  rev := make([]byte, len(s))
+  for i, elem := range s {
+    if rune(elem) == 'A' {
+      rev[i] = 'T'
+    } else if rune(elem) == 'T' {
+      rev[i] = 'A'
+    } else if rune(elem) == 'C' {
+      rev[i] = 'G'
+    } else if rune(elem) == 'G' {
+      rev[i] = 'C'
     } else {
-      rev += string(elem)
+      rev[i] = elem
     }
   }
   return rev
