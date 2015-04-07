@@ -33,27 +33,31 @@ func main(){
       c78 := LZ78(seq)
       fmt.Print(c78, "\t")
 
-      c76 := LZ76(seq)
-      fmt.Print(c76, "\t")
+      nom := NormLZ78(len(seq))
+      //fmt.Println("nom: ", nom)      
 
-      rev78 := LZ78(reverse(seq))
-      rev76 := LZ76(reverse(seq))
-      fmt.Print(c78+rev78, "\t")
-      fmt.Print(c76+rev76, "\t")
-
-      fmt.Print(Kolmogorov(seq), "\t")
-
-      nom := float64(len(seq))/math.Log2(float64(len(seq)))
-            
       // Normalize
       fmt.Print(float64(c78)/(nom), "\t")
-      fmt.Print(float64(c76)/(nom), "\t")
-      fmt.Print(float64(c78+rev78)/(nom), "\t")
-      fmt.Println(float64(c76+rev76)/(nom))
    }
 }
 
-func reverse(s []byte) []byte {
+func NormLZ78(n int) float64 {
+  var rs, i, c float64
+  rs = 0
+  i = 0
+  c = 0
+  for {
+    i++
+    f := math.Pow(4,i)
+    c += i * f
+    if (c>float64(n)) { break } else { rs += f }
+  }  
+  //fmt.Println("i: ", i, "rs: ", rs)
+  rs += math.Ceil((float64(n)-rs)/i)
+  return rs
+}
+
+func ReverseComp(s []byte) []byte {
   rev := make([]byte, len(s))
   for i, elem := range s {
     if rune(elem) == 'A' {
@@ -68,6 +72,11 @@ func reverse(s []byte) []byte {
       rev[i] = elem
     }
   }
+
+  for i, j := 0, len(rev)-1; i < j; i, j = i+1, j-1 {
+        rev[i], rev[j] = rev[j], rev[i]
+  }
+
   return rev
 }
 
